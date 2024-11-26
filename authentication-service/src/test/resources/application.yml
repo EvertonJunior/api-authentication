@@ -1,0 +1,8 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      format_sql: false
+rabbitmq:
+  emailpendente:
+    exchange: email-pendente.ex

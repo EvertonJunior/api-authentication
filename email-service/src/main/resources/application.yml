@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: email-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ######
+    password: ######
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+rabbitmq:
+  queue:
+    email:
+      pendente: email-pendente.ms-email-service

@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.33
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: authentication_api
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: admin123
+    ports:
+      - "3307:3306"
+    networks:
+      - app_network
+
+  authentication-service:
+    image: authentication-service
+    build: ./authentication-service
+    working_dir: /authentication-service
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/authentication_api?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: docker
+      SPRING_DATASOURCE_PASSWORD: admin123
+      RABBITMQ_HOST: rabbitmq
+    command: mvn spring-boot:run
+    depends_on:
+      - mysql
+      - rabbitmq
+    networks:
+      - app_network
+
+  email-service:
+    image: email-service
+    build: ./email-service
+    working_dir: /email-service
+    ports:
+      - "8181:8181"
+    restart: always
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    command: mvn spring-boot:run
+    depends_on:
+      - rabbitmq
+    networks:
+      - app_network
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq_container
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app_network
+
+volumes:
+  mysql_data:
+
+networks:
+  app_network:
+    driver: bridge
