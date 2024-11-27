@@ -43,6 +43,8 @@ services:
     restart: always
     environment:
       RABBITMQ_HOST: rabbitmq
+      EMAIL_LOGIN: ${EMAIL_LOGIN}
+      EMAIL_SENHA: ${EMAIL_SENHA}
     command: mvn spring-boot:run
     depends_on:
       - rabbitmq
