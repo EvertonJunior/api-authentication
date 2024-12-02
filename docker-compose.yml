@@ -1,43 +1,27 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0.33
-    container_name: mysql_container
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: admin123
-      MYSQL_DATABASE: authentication_api
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: admin123
-    ports:
-      - "3307:3306"
-    networks:
-      - app_network
-
   authentication-service:
-    image: authentication-service
-    build: ./authentication-service
-    working_dir: /authentication-service
+    image: devjoseeverton/authentication-service:v1
+    container_name: auth-service
     ports:
       - "8080:8080"
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/authentication_api?allowPublicKeyRetrieval=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: docker
-      SPRING_DATASOURCE_PASSWORD: admin123
       RABBITMQ_HOST: rabbitmq
-    command: mvn spring-boot:run
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
     depends_on:
-      - mysql
       - rabbitmq
     networks:
       - app_network
 
   email-service:
-    image: email-service
-    build: ./email-service
-    working_dir: /email-service
+    image: devjoseeverton/email-service:v1
+    container_name: email_service
     ports:
       - "8181:8181"
     restart: always
@@ -45,7 +29,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       EMAIL_LOGIN: ${EMAIL_LOGIN}
       EMAIL_SENHA: ${EMAIL_SENHA}
-    command: mvn spring-boot:run
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
     depends_on:
       - rabbitmq
     networks:
@@ -55,16 +40,13 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq_container
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - app_network
-
-volumes:
-  mysql_data:
 
 networks:
   app_network:

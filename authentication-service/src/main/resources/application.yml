@@ -2,10 +2,9 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://mysql:3306/authentication_api?allowPublicKeyRetrieval=true&useSSL=false
-    username: developer
-    password: junior087
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
 
   jpa:
     hibernate:
@@ -19,8 +18,8 @@ spring:
   rabbitmq:
     host: rabbitmq
     port: 5672
-    username: guest
-    password: guest
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
 rabbitmq:
   emailpendente:
     exchange: email-pendente.ex

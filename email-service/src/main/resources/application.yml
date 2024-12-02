@@ -18,8 +18,8 @@ spring:
   rabbitmq:
     host: rabbitmq
     port: 5672
-    username: guest
-    password: guest
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
 rabbitmq:
   queue:
     email:
