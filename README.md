@@ -29,6 +29,20 @@ Essa abordagem modular com microserviços permite escalabilidade e manutenção 
 
 Para garantir o funcionamento correto e a integridade da aplicação, foram implementados testes end-to-end (E2E). Esses testes cobrem todo o fluxo da aplicação, foram implementados para validar que todas as funcionalidades estão operando conforme o esperado.
 
+## Deploy AWS
+
+Inicialmente, criei um banco de dados utilizando o Amazon RDS. Em seguida, criei imagens Docker do authentication-service, email-service e também do RabbitMQ, configuradas para conectar-se a esse banco de dados e as disponibilizei no meu repositório no Docker Hub. Posteriormente, configurei uma instância EC2 na AWS, onde implantei a aplicação iniciando os containers a partir das imagens armazenadas no Docker Hub.
+
+Imagem do EC2:
+
+![EC2](https://github.com/EvertonJunior/api-authentication/blob/main/authentication-service/Captura%20de%20tela%20de%202024-11-29%2019-25-17.png)
+
+
+Imagem do RDS:
+
+![RDS](https://github.com/EvertonJunior/api-authentication/blob/main/authentication-service/Captura%20de%20tela%20de%202024-11-29%2019-25-46.png)
+
+
 ## Tecnologias utilizadas:
 
 - Java
@@ -39,7 +53,7 @@ Para garantir o funcionamento correto e a integridade da aplicação, foram impl
 - RabbitMQ
 - Spring doc e Swagger
 - Docker
-
+- AWS
 
 # Autor
 
